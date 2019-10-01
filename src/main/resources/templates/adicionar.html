@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<title>Document</title>
+</head>
+<body>
+	<div class="col-md-6">
+	<h1>Adicionar</h1>
+	<label>Informe seu nome</label>
+	<input class="form-control" id="nome">
+	<label>Informe seu sobrenome</label>
+	<input class="form-control" id="sobrenome">
+	<label>Informe seu email</label>
+	<input class="form-control" type="email" id="email">
+	<br>
+	<button class="btn btn-success" id="salvar">Salvar</button>
+	</div>
+</body>
+<script>
+let nome = document.getElementById('nome');
+let sobrenome = document.getElementById('sobrenome');
+let email = document.getElementById('email');
+let button =  document.getElementById('salvar');
+button.addEventListener('click',()=>{
+	let colaborador = {
+		nome:nome.value,
+		sobrenome:sobrenome.value,
+		email:email.value
+	}
+	const options = {
+		method:'POST',
+		body:JSON.stringify(colaborador),
+		headers: {
+		'Content-Type': 'application/json'
+		}
+	}
+	fetch(`/novoColaborador`,options)
+	.then(window.location.href = "/index");
+});
+</script>
+</html>
