@@ -25,21 +25,70 @@ let nome = document.getElementById('nome');
 let sobrenome = document.getElementById('sobrenome');
 let email = document.getElementById('email');
 let button =  document.getElementById('salvar');
+let id = document.getElementById('id');
 button.addEventListener('click',()=>{
 	let colaborador = {
 		nome:nome.value,
 		sobrenome:sobrenome.value,
 		email:email.value
 	}
-	const options = {
+	let options = {
 		method:'POST',
 		body:JSON.stringify(colaborador),
 		headers: {
 		'Content-Type': 'application/json'
 		}
 	}
+	if(data.id !== undefined){
+		let colaborador = {
+				id:data.id,
+				nome:nome.value,
+				sobrenome:sobrenome.value,
+				email:email.value
+		}
+	 options = {
+				method:'PUT',
+				body:JSON.stringify(colaborador),
+				headers: {
+				'Content-Type': 'application/json'
+				}
+			}
+	}
+	if(data.id === undefined){
 	fetch(`/novoColaborador`,options)
-	.then(window.location.href = "/index");
+	.then(chamaIndex("Esse registro foi inserido com sucesso"));
+	}else{
+		fetch(`alterar/${data.id}`,options)
+		.then(chamaIndex("Esse registro foi altarado com sucesso"));
+	}
+
 });
+function chamaIndex(mensagem){
+	alert(mensagem)
+	window.location.href = "/index"
+}
+var query = location.search.slice(1);
+var partes = query.split('?');
+var data = {};
+partes.forEach(function (parte) {
+    var chaveValor = parte.split('=');
+    var chave = chaveValor[0];
+    var valor = chaveValor[1];
+    data[chave] = valor;
+});
+console.log(data);
+ if(data.id !== undefined){
+		let xml = new XMLHttpRequest();
+		xml.open("GET",`/colaborador/${data.id}`,true);
+		xml.onreadystatechange =()=>{
+			if(xml.readyState === 4 && xml.status === 200){
+				let data = JSON.parse(xml.responseText);
+					nome.value = data.nome;
+					sobrenome.value = data.sobrenome;
+					email.value = data.email;
+			}
+		}
+		xml.send();	 
+ }
 </script>
 </html>

@@ -39,10 +39,29 @@ xml.onreadystatechange = ()=>{
 				<td>${usuario.nome}</td>
 				<td>${usuario.sobrenome}</td>
 				<td>${usuario.email}</td>
+				<td>
+				<button class='btn btn-danger' onClick='removeRegistro(${usuario.id})'>Remover</button>
+				</td>
+				<td>
+				<button class='btn btn-warning' onClick='alteraRegistro(${usuario.id})'>Editar</button>
+				</td>
 		    </tr>`;
 		});
 	}
 }
 xml.send();
+function removeRegistro(id){
+	let xml = new XMLHttpRequest();
+	xml.open("DELETE",`/removeColaborador/${id}`,true);
+	xml.onreadystatechange =()=>{
+		if(xml.readyState === 4 && xml.status === 200){
+			window.location.reload();
+		}
+	}
+	xml.send();
+}
+function alteraRegistro(id){
+	window.location.href = `/add?id=${id}`
+}
 </script>
 </html>

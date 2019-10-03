@@ -40,4 +40,46 @@ public class ColaboradorDAO {
 		con.close();
 		stmt.close();
 	}
+	public void deletarColaborador(Integer id)throws SQLException {
+		Connection con = Conexao.getConnection();
+		PreparedStatement stmt = con.prepareStatement("DELETE FROM COLABORADOR WHERE ID = ?");
+		stmt.setInt(1, id);
+		stmt.execute();
+		stmt.close();
+		con.close();
+	}
+	public Colaborador retornaColaborador(Integer id) throws SQLException {
+		Connection con = Conexao.getConnection();
+		PreparedStatement stmt = con.prepareStatement("SELECT ID, NOME, SOBRENOME,EMAIL FROM COLABORADOR WHERE ID = ?");
+		stmt.setInt(1, id);
+		ResultSet rs = stmt.executeQuery();
+		Colaborador colaborador = new Colaborador();
+		while(rs.next())
+		{
+			colaborador.setId(rs.getInt("ID"));
+			colaborador.setNome(rs.getString("NOME"));
+			colaborador.setSobrenome(rs.getString("SOBRENOME"));
+			colaborador.setEmail(rs.getString("EMAIL"));
+		}
+		rs.close();
+		stmt.close();
+		con.close();
+		return colaborador;
+	}
+	public void alterarColaborador(Colaborador colaborador)throws SQLException {
+		Connection conn = Conexao.getConnection();
+		PreparedStatement stmt = conn.prepareStatement(""
+				+ "UPDATE COLABORADOR "
+				+ "SET NOME = ? "
+				+ ",SOBRENOME =? "
+				+ ",EMAIL = ? "
+				+ "WHERE ID = ?");
+		stmt.setString(1, colaborador.getNome());
+		stmt.setString(2, colaborador.getSobrenome());
+		stmt.setString(3, colaborador.getEmail());
+		stmt.setInt(4, colaborador.getId());
+		stmt.execute();
+		stmt.close();
+		conn.close();
+	}
 }
